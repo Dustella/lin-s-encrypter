@@ -1,56 +1,36 @@
 <script setup lang="ts">
-defineOptions({
-  name: 'IndexPage',
-})
-const user = useUserStore()
-const name = $ref(user.savedName)
-
-const router = useRouter()
-const go = () => {
-  if (name)
-    router.push(`/hi/${encodeURIComponent(name)}`)
-}
-
-const { t } = useI18n()
+import WelcomeImg from '../../public/welcome.png'
 </script>
 
 <template>
-  <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
-
-    <div py-4 />
-
-    <TheInput
-      v-model="name"
-      placeholder="What's your name?"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
-    <div>
-      <button
-        btn m-3 text-sm
-        :disabled="!name"
-        @click="go"
-      >
-        {{ t('button.go') }}
-      </button>
-    </div>
-  </div>
+  <section class="flex flex-row justify-around text-white">
+    <main class=" p-1/9">
+      <p class="text-6xl  text-left h-23 font-bold tracking-1 ">
+        最安全的
+      </p>
+      <p class="text-6xl text-left  h-23  font-bold tracking-1 text-[var(--text)]">
+        水印加密平台
+      </p>
+      <p class="text-left pb-4 text-xl text-white">
+        这里应该有一堆介绍啥的
+      </p>
+      <div class="text-left p-2">
+        <NButton size="large" type="primary" @click="$router.push('/login')">
+          注册以开始
+        </NButton>
+        <NButton class="ml-4" size="large" type="primary" @click="$router.push('/encrypt')">
+          直接开始
+        </NButton>
+      </div>
+    </main>
+    <img :src="WelcomeImg" alt="welcome">
+  </section>
+  <br>
+  <br>
+  <br>
 </template>
 
 <route lang="yaml">
 meta:
-  layout: home
+  layout: default
 </route>

@@ -9,7 +9,6 @@ body,
 }
 
 html.dark {
-  background: #121212;
   color-scheme: dark;
 }
 
@@ -26,4 +25,7 @@ html.dark {
   left: 0;
   width: 100%;
   height: 2px;
+}
+
+button{
 }
