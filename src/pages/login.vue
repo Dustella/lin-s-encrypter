@@ -7,6 +7,10 @@ import type {
   FormRules,
 } from 'naive-ui'
 import {
+  NButton,
+  NFormItem,
+  NInput,
+
   useMessage,
 } from 'naive-ui'
 
@@ -17,6 +21,7 @@ interface ModelType {
 }
 
 export default defineComponent({
+  components: { NFormItem, NInput, NButton },
   setup() {
     const formRef = ref<FormInst | null>(null)
     const rPasswordFormItemRef = ref<FormItemInst | null>(null)
@@ -26,15 +31,10 @@ export default defineComponent({
       password: null,
       reenteredPassword: null,
     })
-    function validatePasswordStartWith(
-      rule: FormItemRule,
-      value: string,
-    ): boolean {
-      return (
-        !!modelRef.value.password
-          && modelRef.value.password.startsWith(value)
-          && modelRef.value.password.length >= value.length
-      )
+    function validatePasswordStartWith(rule: FormItemRule, value: string): boolean {
+      return (!!modelRef.value.password
+                && modelRef.value.password.startsWith(value)
+                && modelRef.value.password.length >= value.length)
     }
     function validatePasswordSame(rule: FormItemRule, value: string): boolean {
       return value === modelRef.value.password
@@ -47,7 +47,6 @@ export default defineComponent({
             // 它应该是数组、英文字母和下划线的组合
             if (!/^[a-zA-Z0-9_]+$/.test(value))
               return false
-
             return true
           },
           trigger: ['input', 'blur'],
@@ -91,7 +90,6 @@ export default defineComponent({
         formRef.value?.validate((errors) => {
           if (!errors)
             message.success('验证成功')
-
           else
             message.error('验证失败')
         })
@@ -104,53 +102,53 @@ export default defineComponent({
 <template>
   <div class="bg-[#f3f4f6] h-screen pt-1/9">
     <div class="max-w-[580px] mx-auto bg-[white] p-13 text-black rounded-2xl shadow-xl">
-      <n-form ref="formRef" :model="model" :rules="rules" size="large">
-        <n-form-item path="age" label="用户名">
-          <n-input
+      <NForm ref="formRef" :model="model" :rules="rules" size="large">
+        <NFormItem path="age" label="用户名">
+          <NInput
             v-model:value="model.username" size="large"
             @keydown.enter.prevent
           />
-        </n-form-item>
-        <n-form-item path="password" label="密码">
-          <n-input
+        </NFormItem>
+        <NFormItem path="password" label="密码">
+          <NInput
             v-model:value="model.password"
             size="large"
             type="password"
             @input="handlePasswordInput"
             @keydown.enter.prevent
           />
-        </n-form-item>
-        <n-form-item
+        </NFormItem>
+        <NFormItem
           ref="rPasswordFormItemRef"
           first
           path="reenteredPassword"
           size="large"
           label="重复密码"
         >
-          <n-input
+          <NInput
             v-model:value="model.reenteredPassword"
             :disabled="!model.password"
             type="password"
             @keydown.enter.prevent
           />
-        </n-form-item>
+        </NFormItem>
         <div>
-          <n-button
+          <NButton
             type="info"
             class="w-full text-black"
             size="large"
             @click="handleValidateButtonClick"
           >
             注册或者登陆
-          </n-button>
+          </NButton>
         </div>
-      </n-form>
+      </NForm>
     </div>
   </div>
 </template>
 
 <style scoped>
-:deep(.n-form-item-label__text){
+:deep(.NFormItem-label__text){
     font-size: 1rem !important;
     height: 1.8rem;
 }

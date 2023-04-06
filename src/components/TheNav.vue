@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { NButton } from 'naive-ui'
+</script>
+
 <template>
   <nav class="p-5 flex flex-row container mx-auto justify-between">
     <span class="text-xl font-bold text-white">

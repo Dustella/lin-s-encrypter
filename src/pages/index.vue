@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NButton } from 'naive-ui'
 import WelcomeImg from '../../public/welcome.png'
 </script>
 
