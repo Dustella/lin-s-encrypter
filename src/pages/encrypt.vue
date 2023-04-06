@@ -1,150 +1,35 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import type {
-  FormInst,
-  FormItemInst,
-  FormItemRule,
-  FormRules,
-} from 'naive-ui'
-import {
-  useMessage,
-} from 'naive-ui'
-
-interface ModelType {
-  username: string | null
-  password: string | null
-  reenteredPassword: string | null
-}
-
-export default defineComponent({
-  setup() {
-    const formRef = ref<FormInst | null>(null)
-    const rPasswordFormItemRef = ref<FormItemInst | null>(null)
-    const message = useMessage()
-    const modelRef = ref<ModelType>({
-      username: null,
-      password: null,
-      reenteredPassword: null,
-    })
-    function validatePasswordStartWith(
-      rule: FormItemRule,
-      value: string,
-    ): boolean {
-      return (
-        !!modelRef.value.password
-          && modelRef.value.password.startsWith(value)
-          && modelRef.value.password.length >= value.length
-      )
-    }
-    function validatePasswordSame(rule: FormItemRule, value: string): boolean {
-      return value === modelRef.value.password
-    }
-    const rules: FormRules = {
-      username: [
-        {
-          required: true,
-          validator(rule: FormItemRule, value: string) {
-            // 它应该是数组、英文字母和下划线的组合
-            if (!/^[a-zA-Z0-9_]+$/.test(value))
-              return false
-
-            return true
-          },
-          trigger: ['input', 'blur'],
-        },
-      ],
-      password: [
-        {
-          required: true,
-          message: '请输入密码',
-        },
-      ],
-      reenteredPassword: [
-        {
-          required: true,
-          message: '请再次输入密码',
-          trigger: ['input', 'blur'],
-        },
-        {
-          validator: validatePasswordStartWith,
-          message: '两次密码输入不一致',
-          trigger: 'input',
-        },
-        {
-          validator: validatePasswordSame,
-          message: '两次密码输入不一致',
-          trigger: ['blur', 'password-input'],
-        },
-      ],
-    }
-    return {
-      formRef,
-      rPasswordFormItemRef,
-      model: modelRef,
-      rules,
-      handlePasswordInput() {
-        if (modelRef.value.reenteredPassword)
-          rPasswordFormItemRef.value?.validate({ trigger: 'password-input' })
-      },
-      handleValidateButtonClick(e: MouseEvent) {
-        e.preventDefault()
-        formRef.value?.validate((errors) => {
-          if (!errors)
-            message.success('验证成功')
-
-          else
-            message.error('验证失败')
-        })
-      },
-    }
-  },
-})
+<script lang="ts" setup>
+import { NButton, NIcon, NInput, NP, NText, NUpload, NUploadDragger } from 'naive-ui'
+import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5'
 </script>
 
 <template>
-  <div class=" h-screen pt-1/9">
-    <div class="max-w-[580px] mx-auto bg-[#f1f1f1] p-13 text-black rounded-2xl shadow-xl">
-      <n-form ref="formRef" :model="model" :rules="rules" size="large">
-        <n-form-item path="age" label="用户名">
-          <n-input
-            v-model:value="model.username" size="large"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="password" label="密码">
-          <n-input
-            v-model:value="model.password"
-            size="large"
-            type="password"
-            @input="handlePasswordInput"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item
-          ref="rPasswordFormItemRef"
-          first
-          path="reenteredPassword"
-          size="large"
-          label="重复密码"
-        >
-          <n-input
-            v-model:value="model.reenteredPassword"
-            :disabled="!model.password"
-            type="password"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <div>
-          <n-button
-            type="info"
-            class="w-full text-black"
-            size="large"
-            @click="handleValidateButtonClick"
-          >
-            注册或者登陆
-          </n-button>
-        </div>
-      </n-form>
+  <div class=" h-screen pt-1/16 bg-[#e0e0e0]">
+    <div class="max-w-[580px] mx-auto bg-[#fff] p-13 text-black rounded-2xl shadow-xl">
+      <NUpload
+        multiple
+        directory-dnd
+        action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
+        :max="5"
+      >
+        <NUploadDragger>
+          <div style="margin-bottom: 12px">
+            <NIcon size="48" :depth="3">
+              <ArchiveIcon />
+            </NIcon>
+          </div>
+          <NText style="font-size: 16px">
+            点击或者拖动文件到该区域来上传图像文件
+          </NText>
+          <NP depth="3" style="margin: 8px 0 0 0">
+            图像中不应当包含你的机密讯息
+          </NP>
+        </NUploadDragger>
+      </NUpload>
+      <NInput type="textarea" placeholder="输入加密讯息" />
+      <NButton size="large" class="w-full mt-4">
+        加密
+      </NButton>
     </div>
   </div>
 </template>

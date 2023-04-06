@@ -1,102 +1,92 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import type {
   FormInst,
-  FormItemInst,
   FormItemRule,
   FormRules,
 } from 'naive-ui'
 import {
   NButton,
+  NForm,
   NFormItem,
   NInput,
-
   useMessage,
 } from 'naive-ui'
+import { ofetch } from 'ofetch'
 
 interface ModelType {
   username: string | null
   password: string | null
-  reenteredPassword: string | null
 }
 
-export default defineComponent({
-  components: { NFormItem, NInput, NButton },
-  setup() {
-    const formRef = ref<FormInst | null>(null)
-    const rPasswordFormItemRef = ref<FormItemInst | null>(null)
-    const message = useMessage()
-    const modelRef = ref<ModelType>({
-      username: null,
-      password: null,
-      reenteredPassword: null,
-    })
-    function validatePasswordStartWith(rule: FormItemRule, value: string): boolean {
-      return (!!modelRef.value.password
-                && modelRef.value.password.startsWith(value)
-                && modelRef.value.password.length >= value.length)
-    }
-    function validatePasswordSame(rule: FormItemRule, value: string): boolean {
-      return value === modelRef.value.password
-    }
-    const rules: FormRules = {
-      username: [
-        {
-          required: true,
-          validator(rule: FormItemRule, value: string) {
-            // 它应该是数组、英文字母和下划线的组合
-            if (!/^[a-zA-Z0-9_]+$/.test(value))
-              return false
-            return true
-          },
-          trigger: ['input', 'blur'],
-        },
-      ],
-      password: [
-        {
-          required: true,
-          message: '请输入密码',
-        },
-      ],
-      reenteredPassword: [
-        {
-          required: true,
-          message: '请再次输入密码',
-          trigger: ['input', 'blur'],
-        },
-        {
-          validator: validatePasswordStartWith,
-          message: '两次密码输入不一致',
-          trigger: 'input',
-        },
-        {
-          validator: validatePasswordSame,
-          message: '两次密码输入不一致',
-          trigger: ['blur', 'password-input'],
-        },
-      ],
-    }
-    return {
-      formRef,
-      rPasswordFormItemRef,
-      model: modelRef,
-      rules,
-      handlePasswordInput() {
-        if (modelRef.value.reenteredPassword)
-          rPasswordFormItemRef.value?.validate({ trigger: 'password-input' })
-      },
-      handleValidateButtonClick(e: MouseEvent) {
-        e.preventDefault()
-        formRef.value?.validate((errors) => {
-          if (!errors)
-            message.success('验证成功')
-          else
-            message.error('验证失败')
-        })
-      },
-    }
-  },
+const formRef = ref<FormInst | null>(null)
+const message = useMessage()
+const model = ref<ModelType>({
+  username: null,
+  password: null,
 })
+const rules: FormRules = {
+  username: [
+    {
+      required: true,
+      validator(rule: FormItemRule, value: string) {
+        // 它应该是数组、英文字母和下划线的组合
+        if (!/^[a-zA-Z0-9_]+$/.test(value))
+          return false
+        return true
+      },
+      trigger: ['input', 'blur'],
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: '请输入密码',
+    },
+  ],
+}
+async function handleRegisterClick(e: MouseEvent) {
+  e.preventDefault()
+  formRef.value?.validate(async (errors) => {
+    if (!errors) {
+      // start login attempt
+      const { username, password } = model.value
+      const form = new FormData()
+      form.append('account', username!)
+      form.append('password', password!)
+      const resp = await ofetch(`http://demo.drshw.tech/api/register/?account=${username}&password=${password}`, {
+        method: 'POST',
+        body: form,
+      })
+      if (resp.code === 200)
+
+        message.success(JSON.stringify(resp.msg))
+
+      else
+
+        message.error(JSON.stringify(resp.msg))
+    }
+    else { message.error('验证失败') }
+  })
+}
+async function handleLoginClick(e: Event) {
+  e.preventDefault()
+  formRef.value?.validate(async (errors) => {
+    if (!errors) {
+      const { username, password } = model.value
+      // start login attempt
+      const resp = await ofetch(`http://demo.drshw.tech/api/login/?account=${username}&password=${password}`)
+      if (resp.code === 200)
+
+        message.success(JSON.stringify(resp.msg))
+
+      else
+
+        message.error(JSON.stringify(resp.msg))
+    }
+    else { message.error('验证失败') }
+  })
+}
 </script>
 
 <template>
@@ -114,32 +104,25 @@ export default defineComponent({
             v-model:value="model.password"
             size="large"
             type="password"
-            @input="handlePasswordInput"
             @keydown.enter.prevent
           />
         </NFormItem>
-        <NFormItem
-          ref="rPasswordFormItemRef"
-          first
-          path="reenteredPassword"
-          size="large"
-          label="重复密码"
-        >
-          <NInput
-            v-model:value="model.reenteredPassword"
-            :disabled="!model.password"
-            type="password"
-            @keydown.enter.prevent
-          />
-        </NFormItem>
-        <div>
+        <div class="flex flex-row justify-around">
           <NButton
             type="info"
-            class="w-full text-black"
+            class=" text-black w-1/3"
             size="large"
-            @click="handleValidateButtonClick"
+            @click="handleRegisterClick"
           >
-            注册或者登陆
+            注册
+          </NButton>
+          <NButton
+            type="info"
+            class=" text-black w-1/3"
+            size="large"
+            @click="handleLoginClick"
+          >
+            登陆
           </NButton>
         </div>
       </NForm>

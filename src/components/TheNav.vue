@@ -11,7 +11,7 @@ import { NButton } from 'naive-ui'
         加密水印平台
       </RouterLink>
     </span>
-    <NButton type="info" color="#818cf8">
+    <NButton type="info" color="#818cf8" @click="$router.push('/login')">
       登陆
     </NButton>
   </nav>

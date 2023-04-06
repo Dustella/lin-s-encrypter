@@ -7,6 +7,7 @@ specifiers:
   '@types/markdown-it-link-attributes': ^3.0.1
   '@types/nprogress': ^0.2.0
   '@unocss/reset': ^0.50.6
+  '@vicons/ionicons5': ^0.12.0
   '@vitejs/plugin-vue': ^4.1.0
   '@vue-macros/reactivity-transform': ^0.3.2
   '@vue-macros/volar': ^0.9.4
@@ -56,6 +57,7 @@ specifiers:
 
 dependencies:
   '@unocss/reset': 0.50.6
+  '@vicons/ionicons5': 0.12.0
   '@vue-macros/reactivity-transform': 0.3.3_vue@3.2.47
   '@vueuse/core': 9.13.0_vue@3.2.47
   '@vueuse/head': 1.1.23_vue@3.2.47
@@ -2707,6 +2709,10 @@ packages:
     transitivePeerDependencies:
       - rollup
     dev: true
+
+  /@vicons/ionicons5/0.12.0:
+    resolution: {integrity: sha512-Iy1EUVRpX0WWxeu1VIReR1zsZLMc4fqpt223czR+Rpnrwu7pt46nbnC2ycO7ItI/uqDLJxnbcMC7FujKs9IfFA==}
+    dev: false
 
   /@vitejs/plugin-vue/4.1.0_vite@4.2.1+vue@3.2.47:
     resolution: {integrity: sha512-++9JOAFdcXI3lyer9UKUV4rfoQ3T1RN8yDqoCLar86s0xQct5yblxAE+yWgRnU5/0FOlVCpTZpYSBV/bGWrSrQ==}
