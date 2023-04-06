@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
+const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
 </script>
 
 <template>
@@ -11,7 +12,11 @@ import { NButton } from 'naive-ui'
         加密水印平台
       </RouterLink>
     </span>
-    <NButton type="info" color="#818cf8" @click="$router.push('/login')">
+    <NButton
+      v-if="isLoggedIn.isLoggedIn === false"
+
+      type="info" color="#818cf8" @click="$router.push('/login')"
+    >
       登陆
     </NButton>
   </nav>

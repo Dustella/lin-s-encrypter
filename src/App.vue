@@ -30,6 +30,19 @@ const themeOverrides: GlobalThemeOverrides = {
     primaryColorPressed: '#815cf8',
   },
 }
+
+const loginState = reactive({
+  isLoggedIn: false,
+})
+
+onMounted(async () => {
+  if (localStorage.getItem('isLoggedIn') === '1')
+    loginState.isLoggedIn = true
+})
+
+provide('loginState', loginState)
+provide('setLoggedIn',
+  () => { loginState.isLoggedIn = true })
 </script>
 
 <template>

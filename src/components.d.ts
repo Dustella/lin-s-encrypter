@@ -10,6 +10,8 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     EncryptResult: typeof import('./components/EncryptResult.vue')['default']
+    NButton: typeof import('naive-ui')['NButton']
+    NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

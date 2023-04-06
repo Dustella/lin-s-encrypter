@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
 import WelcomeImg from '../../public/welcome.png'
+const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
 </script>
 
 <template>
@@ -16,10 +17,17 @@ import WelcomeImg from '../../public/welcome.png'
         这里应该有一堆介绍啥的
       </p>
       <div class="text-left p-2">
-        <NButton size="large" type="primary" @click="$router.push('/login')">
+        <NButton
+          v-if="isLoggedIn.isLoggedIn === false"
+
+          size="large" type="primary" @click="$router.push('/login')"
+        >
           注册以开始
         </NButton>
-        <NButton class="ml-4" size="large" type="primary" @click="$router.push('/encrypt')">
+        <NButton
+          v-else
+          class="ml-4" size="large" type="primary" @click="$router.push('/encrypt')"
+        >
           直接开始
         </NButton>
       </div>

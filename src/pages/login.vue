@@ -25,6 +25,8 @@ const model = ref<ModelType>({
   username: null,
   password: null,
 })
+
+const setLoggedIn = inject('setLoggedIn') as () => void
 const rules: FormRules = {
   username: [
     {
@@ -69,6 +71,7 @@ async function handleRegisterClick(e: MouseEvent) {
     else { message.error('验证失败') }
   })
 }
+const router = useRouter()
 async function handleLoginClick(e: Event) {
   e.preventDefault()
   formRef.value?.validate(async (errors) => {
@@ -76,13 +79,15 @@ async function handleLoginClick(e: Event) {
       const { username, password } = model.value
       // start login attempt
       const resp = await ofetch(`http://demo.drshw.tech/api/login/?account=${username}&password=${password}`)
-      if (resp.code === 200)
-
+      if (resp.code === 200) {
+        // successful login
+        localStorage.setItem('isLoggedIn', '1')
+        setLoggedIn()
         message.success(JSON.stringify(resp.msg))
+        router.push('/')
+      }
 
-      else
-
-        message.error(JSON.stringify(resp.msg))
+      else { message.error(JSON.stringify(resp.msg)) }
     }
     else { message.error('验证失败') }
   })
