@@ -44,6 +44,9 @@ const logout = async () => {
       <NButton class="mx-2 text-white" @click="logout">
         登出
       </NButton>
+      <NButton class="mx-2 text-white" @click="$router.push('/changepwd')">
+        修改密码
+      </NButton>
     </div>
   </nav>
 </template>
