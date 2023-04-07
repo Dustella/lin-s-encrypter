@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
+import { ofetch } from 'ofetch'
 const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
 
-const logout = () => {
+const logout = async () => {
+  await ofetch('http://demo.drshw.tech/api/logout')
   localStorage.clear()
   location.href = '/'
 }
