@@ -2,9 +2,9 @@
 
 authoring:
 
-应用提供者：林同学
+应用提供者：林同学  
 后端：[邵老师](https://github.com/Drshw)  
-前端：[特菈](https://github/Dustella)
+前端：[特菈](https://github.com/Dustella)
 
 ## 准备开发环境
 
