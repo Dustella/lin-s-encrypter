@@ -1,12 +1,35 @@
 <script setup lang="ts">
-import { NButton } from 'naive-ui'
+import { NButton, NDropdown } from 'naive-ui'
 import { ofetch } from 'ofetch'
 const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
+
+const options = [
+  {
+    label: '登出',
+    key: 'logout',
+  },
+  {
+    label: '历史记录',
+    key: 'his',
+  }, {
+    label: '修改密码',
+    key: 'changepwd',
+  },
+]
 
 const logout = async () => {
   await ofetch('http://demo.drshw.tech/api/logout')
   localStorage.clear()
   location.href = '/'
+}
+
+const router = useRouter()
+const handle = (key: string) => {
+  if (key === 'logout') {
+    logout()
+    return
+  }
+  router.push(`/${key}`)
 }
 </script>
 
@@ -38,15 +61,11 @@ const logout = async () => {
       <NButton class="mx-2 text-white" @click="$router.push('/decrypt')">
         解密
       </NButton>
-      <NButton class="mx-2 text-white" @click="$router.push('/his')">
-        历史记录
-      </NButton>
-      <NButton class="mx-2 text-white" @click="logout">
-        登出
-      </NButton>
-      <NButton class="mx-2 text-white" @click="$router.push('/changepwd')">
-        修改密码
-      </NButton>
+      <NDropdown :options="options" @select="handle">
+        <NButton class="mx-2 text-white">
+          用户
+        </NButton>
+      </NDropdown>
     </div>
   </nav>
 </template>

@@ -26,7 +26,7 @@ const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
         </NButton>
         <NButton
           v-else
-          class="ml-4" size="large" type="primary" @click="$router.push('/encrypt')"
+          class="" size="large" type="primary" @click="$router.push('/encrypt')"
         >
           直接开始
         </NButton>

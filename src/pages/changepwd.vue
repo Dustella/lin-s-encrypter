@@ -1,42 +1,56 @@
 <script lang="ts" setup>
-import { NButton, NInput, NModal, NSpin } from 'naive-ui'
-import { addRecord } from './data'
+import { NButton, NInput, NModal, NSpin, useMessage } from 'naive-ui'
+import { ofetch } from 'ofetch'
 
-const key = ref('')
+const password = reactive({
+  first: '',
+  second: '',
+})
 const showModal = ref(false)
 const isLoading = ref(false)
 const img_url = ref('')
 const filename = ref('')
+const message = useMessage()
 
 const customRequest = async () => {
+  if (password.first !== password.second)
+    return message.error('两次输入的密码不一致')
+
+  if (password.first.length < 6)
+    return message.error('密码长度不得小于6位')
+
   showModal.value = true
   isLoading.value = true
+
   const formData = new FormData()
 
-  const image = document.getElementById('image') as HTMLInputElement
-
-  formData.append('image', image.files![0])
-  formData.append('image_name', image.files![0].name)
-  const rawname = image.files![0].name
-  filename.value = `${rawname.slice(0, rawname.lastIndexOf('.'))}_hidden.png`
   formData.append('account', localStorage.getItem('account')!)
-  formData.append('key', key.value)
-  const resp = await fetch('http://demo.drshw.tech/api/changepwd/', {
+  formData.append('new_password', password.first)
+
+  const resp = await ofetch('http://demo.drshw.tech/api/changepwd/', {
     method: 'POST',
     body: formData,
   })
+  if (resp.code === 200)
+    message.success('修改成功,请重新登录')
 
-  addRecord(filename.value, key.value)
-  img_url.value = URL.createObjectURL(await resp.blob())
+  else
+    message.error(resp.msg)
+
   isLoading.value = false
+  showModal.value = false
 }
 </script>
 
 <template>
   <div class=" h-screen pt-1/16 bg-[#e0e0e0]">
     <div class="max-w-[580px] mx-auto bg-[#fff] p-13 text-black rounded-2xl shadow-xl">
-      <NInput v-model:value="key" type="textarea" placeholder="输入新的密码" />
-      <NInput v-model:value="key" type="textarea" placeholder="再次输入新的密码" />
+      <h1 class="text-xl">
+        请输入你的密码
+      </h1>
+      <br>
+      <NInput v-model:value="password.first" size="large" class="my-2" type="password" placeholder="输入新的密码" />
+      <NInput v-model:value="password.second" size="large" class="my-2" type="password" placeholder="再次输入新的密码" />
       <NButton size="large" class="w-full mt-4" @click="customRequest">
         修改密码
       </NButton>
