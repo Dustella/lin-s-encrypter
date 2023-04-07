@@ -33,7 +33,7 @@ const customRequest = async () => {
       <input id="image" type="file" name="image" class="appearance-none opacity-0">
       <label for="image">
         <div
-          class=" my-2 flex flex-col items-center justify-center h-[200px] bg-[#f0f0f0] rounded-2xl border-dashed border-2 border-[#d0d0d0]"
+          class=" my-2 flex flex-col items-center justify-center h-[200px] rounded-2xl border-dashed border-2 border-[#d0d0d0]"
         >
           <div style="margin-bottom: 12px">
             <NIcon size="48" :depth="3">
@@ -42,10 +42,10 @@ const customRequest = async () => {
           </div>
           <NText style="font-size: 16px">
             ·
-            点击或者拖动文件到该区域来上传图像文件
+            点击该区域来上传图像文件
           </NText>
           <NP depth="3" style="margin: 8px 0 0 0">
-            图像中不应当包含你的机密讯息
+            您应当上传带有加密信息的文件
           </NP>
         </div>
       </label>
