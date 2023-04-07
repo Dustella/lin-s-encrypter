@@ -20,7 +20,7 @@ const customRequest = async () => {
   formData.append('image_name', image.files![0].name)
   const rawname = image.files![0].name
   filename.value = `${rawname.slice(0, rawname.lastIndexOf('.'))}_hidden.png`
-  formData.append('account', 'u3')
+  formData.append('account', localStorage.getItem('account')!)
   formData.append('key', key.value)
   const resp = await fetch('http://demo.drshw.tech/api/encrypt/', {
     method: 'POST',

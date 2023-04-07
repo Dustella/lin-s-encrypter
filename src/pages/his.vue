@@ -2,10 +2,6 @@
 import { NDataTable } from 'naive-ui'
 import { ofetch } from 'ofetch'
 
-const showModal = ref(false)
-const isLoading = ref(false)
-const filename = ref('')
-
 interface Record {
   filename: string
   isde: string
@@ -31,7 +27,7 @@ const data = ref<Record[]>([])
 
 const query = async () => {
   const resp = await ofetch('http://demo.drshw.tech/api/checks', {
-    query: { account: 'u3' },
+    query: { account: localStorage.getItem('account') },
   })
   const res = (resp.data as { image_name: string; is_decrypted: boolean; query_time: string }[]).map(
     ({ image_name, is_decrypted, query_time }) => ({

@@ -18,7 +18,7 @@ const customRequest = async () => {
   filename.value = image.files![0].name
   formData.append('account', 'u3')
   const key = queryRecord(filename.value)
-  await ofetch(`http://demo.drshw.tech/api/decrypt/?account=u3&key=${key}&image_name=${filename.value.replace('_hidden', '')}`, {
+  await ofetch(`http://demo.drshw.tech/api/decrypt/?account=${localStorage.getItem('account')!}&key=${key}&image_name=${filename.value.replace('_hidden', '')}`, {
 
   })
   setTimeout(() => {

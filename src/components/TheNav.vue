@@ -1,15 +1,25 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
 const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
+
+const logout = () => {
+  localStorage.clear()
+  location.href = '/'
+}
 </script>
 
 <template>
   <nav class="p-5 flex flex-row container mx-auto justify-between">
-    <span class="text-xl font-bold text-white">
+    <span class="text-xl font-bold text-white flex items-center">
 
+      <NIcon class="inline mr-5">
+        <img src="/logo.png" width="40">
+      </NIcon>
       <RouterLink to="/">
+        <span>
 
-        加密水印平台
+          加密水印平台
+        </span>
       </RouterLink>
     </span>
     <NButton
@@ -28,6 +38,9 @@ const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
       </NButton>
       <NButton class="mx-2 text-white" @click="$router.push('/his')">
         历史记录
+      </NButton>
+      <NButton class="mx-2 text-white" @click="logout">
+        登出
       </NButton>
     </div>
   </nav>

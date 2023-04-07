@@ -82,6 +82,7 @@ async function handleLoginClick(e: Event) {
       if (resp.code === 200) {
         // successful login
         localStorage.setItem('isLoggedIn', '1')
+        localStorage.setItem('account', username!)
         setLoggedIn()
         message.success(JSON.stringify(resp.msg))
         router.push('/')
