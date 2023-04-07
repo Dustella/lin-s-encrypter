@@ -19,5 +19,13 @@ const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
     >
       登陆
     </NButton>
+    <div v-else>
+      <NButton class="mx-2 text-white" @click="$router.push('/encrypt')">
+        加密
+      </NButton>
+      <NButton class="mx-2 text-white" @click="$router.push('/decrypt')">
+        解密
+      </NButton>
+    </div>
   </nav>
 </template>
