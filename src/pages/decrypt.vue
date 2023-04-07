@@ -2,11 +2,11 @@
 import { NButton, NIcon, NModal, NP, NSpin, NText } from 'naive-ui'
 import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5'
 import { ofetch } from 'ofetch'
+import { queryRecord } from './data'
 
-const key = ref('')
 const showModal = ref(false)
 const isLoading = ref(false)
-const img_url = ref('')
+const filename = ref('')
 
 const customRequest = async () => {
   showModal.value = true
@@ -15,16 +15,15 @@ const customRequest = async () => {
 
   const image = document.getElementById('image') as HTMLInputElement
 
-  formData.append('image', image.files![0])
-  formData.append('image_name', image.files![0].name)
+  filename.value = image.files![0].name
   formData.append('account', 'u3')
-  formData.append('key', key.value)
-  const resp = await ofetch('http://demo.drshw.tech/api/encrypt/', {
-    method: 'POST',
-    body: formData,
+  const key = queryRecord(filename.value)
+  await ofetch(`http://demo.drshw.tech/api/decrypt/?account=u3&key=${key}&image_name=${filename.value.replace('_hidden', '')}`, {
+
   })
-  img_url.value = URL.createObjectURL(resp)
-  isLoading.value = false
+  setTimeout(() => {
+    isLoading.value = false
+  }, 2000)
 }
 </script>
 
@@ -64,15 +63,13 @@ const customRequest = async () => {
   >
     <div v-if="isLoading">
       <NSpin size="large" />
-      正在生成加密图像
+      正在解密
     </div>
     <div v-else>
-      <img :src="img_url" alt="">
-      <a :href="img_url" download>
-        <NButton>
-          下载图像
-        </NButton>
-      </a>
+      解密内容:
+      <pre>
+        {{ queryRecord(filename) }}
+      </pre>
     </div>
   </NModal>
 </template>

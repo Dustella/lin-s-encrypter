@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { NButton, NIcon, NInput, NModal, NP, NSpin, NText } from 'naive-ui'
 import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5'
-import { ofetch } from 'ofetch'
+import { addRecord } from './data'
 
 const key = ref('')
 const showModal = ref(false)
 const isLoading = ref(false)
 const img_url = ref('')
+const filename = ref('')
 
 const customRequest = async () => {
   showModal.value = true
@@ -17,13 +18,17 @@ const customRequest = async () => {
 
   formData.append('image', image.files![0])
   formData.append('image_name', image.files![0].name)
+  const rawname = image.files![0].name
+  filename.value = `${rawname.slice(0, rawname.lastIndexOf('.'))}_hidden.png`
   formData.append('account', 'u3')
   formData.append('key', key.value)
-  const resp = await ofetch('http://demo.drshw.tech/api/encrypt/', {
+  const resp = await fetch('http://demo.drshw.tech/api/encrypt/', {
     method: 'POST',
     body: formData,
   })
-  img_url.value = URL.createObjectURL(resp)
+
+  addRecord(filename.value, key.value)
+  img_url.value = URL.createObjectURL(await resp.blob())
   isLoading.value = false
 }
 </script>
@@ -69,7 +74,7 @@ const customRequest = async () => {
     </div>
     <div v-else>
       <img :src="img_url" alt="">
-      <a :href="img_url" download>
+      <a :href="img_url" :download="filename">
         <NButton>
           下载图像
         </NButton>
