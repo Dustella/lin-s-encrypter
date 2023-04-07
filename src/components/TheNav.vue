@@ -26,6 +26,9 @@ const isLoggedIn = inject('loginState') as { isLoggedIn: boolean }
       <NButton class="mx-2 text-white" @click="$router.push('/decrypt')">
         解密
       </NButton>
+      <NButton class="mx-2 text-white" @click="$router.push('/his')">
+        历史记录
+      </NButton>
     </div>
   </nav>
 </template>
