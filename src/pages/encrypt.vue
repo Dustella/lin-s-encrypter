@@ -22,13 +22,13 @@ const customRequest = async () => {
   filename.value = `${rawname.slice(0, rawname.lastIndexOf('.'))}_hidden.png`
   formData.append('account', localStorage.getItem('account')!)
   formData.append('key', key.value)
-  const resp = await fetch('http://demo.drshw.tech/api/encrypt/', {
+  await fetch('http://demo.drshw.tech/api/encrypt/', {
     method: 'POST',
     body: formData,
   })
 
   addRecord(filename.value, key.value)
-  img_url.value = URL.createObjectURL(await resp.blob())
+  img_url.value = ` http://demo.drshw.tech/api/getimage/?account=${localStorage.getItem('account')}&image_name=${rawname}&is_decrypted=false`
   isLoading.value = false
 }
 </script>
