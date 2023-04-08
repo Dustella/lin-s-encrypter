@@ -5,7 +5,9 @@ import DecryptButton from '~/components/DecryptButton.vue'
 
 interface Record {
   filename: string
-  isde: string
+  isde: {
+    is_decrypted: boolean
+    key: string }
   time: string
 }
 
