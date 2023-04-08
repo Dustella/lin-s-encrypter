@@ -9,6 +9,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    DecryptButton: typeof import('./components/DecryptButton.vue')['default']
+    DownloadLink: typeof import('./components/DownloadLink.vue')['default']
     EncryptResult: typeof import('./components/EncryptResult.vue')['default']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
